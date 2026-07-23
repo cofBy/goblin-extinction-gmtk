@@ -8,6 +8,9 @@ public class planetGenerator : MonoBehaviour
     public int subDivisions;
     bool started = false;
 
+    [Header("cube sphere")]
+    [Range(0, 1)]public float factor;
+
     private void Start()
     {
         started = true;
@@ -50,8 +53,9 @@ public class planetGenerator : MonoBehaviour
                     if (!isSurface) continue;
 
                     Vector3 pos = new Vector3((x - half) * size / (subDivisions + 1), (y - half) * size / (subDivisions + 1), (z - half) * size / (subDivisions + 1));
+                    Vector3 spherePos = pos.normalized * size;
 
-                    vertices[index] = pos;
+                    vertices[index] = Vector3.Lerp(pos, spherePos, factor);
 
                     float u = (float)x / (subDivisions + 1);
                     float v = (float)y / (subDivisions + 1);
