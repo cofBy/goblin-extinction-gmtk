@@ -16,9 +16,21 @@ public class humanLogic : MonoBehaviour
     public LayerMask groundMask;
     bool grounded;
 
+    [Header("animations")]
+    public float swayAmount;
+    public float maxBounce;
+    public float animationSpeed;
+    float timer;
+
+    public Transform model;
+
     private void Update()
     {
         grounded = Physics.Raycast(transform.position, -transform.up, groundRayLength, groundMask);
+
+        timer += Time.deltaTime * animationSpeed;
+        model.localRotation = Quaternion.Euler(0, 0, Mathf.Sin(timer * 2) * swayAmount);
+        model.localPosition = Vector3.up * Mathf.Sin(timer) * maxBounce;
     }
 
     private void FixedUpdate()

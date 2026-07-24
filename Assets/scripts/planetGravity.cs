@@ -8,7 +8,7 @@ public class planetGravity : MonoBehaviour
     [Header("gravity Settings")]
     public float gravityStrength;
 
-    private void Awake()
+    private void Start()
     {
         rbs = FindObjectsByType<Rigidbody>();
     }
