@@ -13,6 +13,9 @@ public class planetGenerator : MonoBehaviour
     [Range(0, 1)] public float groundPercentage;
     int seed;
 
+    [Header("collider")]
+    public MeshCollider col;
+
     private void Start()
     {
         seed = Random.Range(0, 99);
@@ -129,6 +132,10 @@ public class planetGenerator : MonoBehaviour
         mesh.RecalculateBounds();
 
         filter.mesh = mesh;
+        if (col != null)
+        {
+            GetComponent<MeshCollider>().sharedMesh = mesh;
+        }
     }
 
 }
