@@ -6,26 +6,32 @@ public class planetGenerator : MonoBehaviour
     [Header("making cube")]
     public float size;
     public int subDivisions;
-    bool started = false;
 
-    [Header("cube sphere")]
-    [Range(0, 1)]public float factor;
+    public bool update;
+    [Header("random generation")]
+    public float noiseScale;
+    public float noiseStrength;
+    [Range(0, 1)] public float groundPercentage;
+    public bool generateRandomSeed;
+    int seed;
 
     private void Start()
     {
-        started = true;
-        makeCube();
+        update = true;
     }
     private void OnValidate()
     {
-        if (started == false) return;
-        makeCube();
+        if (update == true)
+        {
+            makeCube();
+            update = false;
+            if (generateRandomSeed) seed = Random.Range(0, 99);
+        }
     }
 
     void makeCube()
     {
         MeshFilter filter = GetComponent<MeshFilter>();
-        if (filter.mesh != null) Destroy(filter.mesh);
 
         Mesh mesh = new Mesh();
         mesh.name = "planet";
@@ -35,6 +41,7 @@ public class planetGenerator : MonoBehaviour
 
         Vector3[] vertices = new Vector3[surfaceVertices];
         Vector2[] uv = new Vector2[surfaceVertices];
+        Vector2[] noiseUV = new Vector2[surfaceVertices];
 
         var indexLookup = new Dictionary<int, int>();
 
@@ -51,11 +58,6 @@ public class planetGenerator : MonoBehaviour
                                       z == 0 || z == subDivisions + 1);
 
                     if (!isSurface) continue;
-
-                    Vector3 pos = new Vector3((x - half) * size / (subDivisions + 1), (y - half) * size / (subDivisions + 1), (z - half) * size / (subDivisions + 1));
-                    Vector3 spherePos = pos.normalized * size;
-
-                    vertices[index] = Vector3.Lerp(pos, spherePos, factor);
 
                     float u = (float)x / (subDivisions + 1);
                     float v = (float)y / (subDivisions + 1);
@@ -74,6 +76,12 @@ public class planetGenerator : MonoBehaviour
                     }
 
                     indexLookup[x + y * res + z * res * res] = index;
+
+                    Vector3 pos = new Vector3((x - half) * size / (subDivisions + 1), (y - half) * size / (subDivisions + 1), (z - half) * size / (subDivisions + 1));
+
+                    float noiseValue = Mathf.Clamp01(Mathf.PerlinNoise(uv[index].x * noiseScale + seed, uv[index].y * noiseScale + seed) + groundPercentage - 0.5f);
+                    vertices[index] = pos.normalized * (size + (noiseValue - 0.5f) * noiseStrength);
+                    noiseUV[index] = new Vector2(noiseValue, 0);
 
                     index++;
                 }
@@ -125,8 +133,13 @@ public class planetGenerator : MonoBehaviour
 
         mesh.vertices = vertices;
         mesh.uv = uv;
+        mesh.uv2 = noiseUV;
         mesh.triangles = triangles;
+
+        mesh.RecalculateNormals();
+        mesh.RecalculateBounds();
 
         filter.mesh = mesh;
     }
+
 }
