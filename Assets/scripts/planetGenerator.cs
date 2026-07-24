@@ -7,28 +7,17 @@ public class planetGenerator : MonoBehaviour
     public float size;
     public int subDivisions;
 
-    public bool update;
     [Header("random generation")]
     public float noiseScale;
     public float noiseStrength;
     [Range(0, 1)] public float groundPercentage;
-    public bool generateRandomSeed;
     int seed;
 
     private void Start()
     {
-        update = true;
+        seed = Random.Range(0, 99);
+        makeCube();
     }
-    private void OnValidate()
-    {
-        if (update == true)
-        {
-            makeCube();
-            update = false;
-            if (generateRandomSeed) seed = Random.Range(0, 99);
-        }
-    }
-
     void makeCube()
     {
         MeshFilter filter = GetComponent<MeshFilter>();
