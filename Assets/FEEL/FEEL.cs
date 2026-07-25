@@ -1,7 +1,8 @@
-using System.Collections;
 using System;
-using UnityEngine;
+using System.Collections;
 using Unity.Cinemachine;
+using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class FEEL : MonoBehaviour
 {
@@ -10,10 +11,27 @@ public class FEEL : MonoBehaviour
     public CinemachineHardLockToTarget cam;
     public static CinemachineHardLockToTarget staticCam;
 
+    [Header("transition")]
+    public Material publicTransitionMat;
+    public static Material transitionMat;
+    static int timeIndex;
+
+    public float durationSeconds;
+    public static float duration;
     private void Awake()
     {
+        transitionMat = publicTransitionMat;
+        timeIndex = Shader.PropertyToID("_time");
+
+        duration = durationSeconds;
+
+        StartCoroutine(startTransition());
+
         sounds = PublicSounds;
-        staticCam = cam;
+        if (cam != null)
+        {
+            staticCam = cam;
+        }
         foreach (Sound s in sounds)
         {
             s.Source = gameObject.AddComponent<AudioSource>();
@@ -40,7 +58,44 @@ public class FEEL : MonoBehaviour
     {
         PoolManager.spawnObject(obj, pos, rot, PoolManager.PoolType.Particals);
     }
+    public static void gotoScene(int sceneIndex, MonoBehaviour runner)
+    {
+        runner.StartCoroutine(sceneEnumerator(sceneIndex));
+    }
 
+    IEnumerator startTransition()
+    {
+        transitionMat.SetFloat(timeIndex, 0);
+
+        yield return new WaitForSeconds(duration);
+
+        float timer = 0;
+        while (timer >= -duration)
+        {
+            timer -= Time.deltaTime;
+            transitionMat.SetFloat(timeIndex, timer / duration);
+
+            yield return new WaitForSeconds(Time.deltaTime);
+        }
+        transitionMat.SetFloat(timeIndex, -1);
+    }
+
+    static IEnumerator sceneEnumerator(int sceneIndex)
+    {
+        float timer = duration;
+        while (timer >= 0)
+        {
+            timer -= Time.deltaTime;
+            transitionMat.SetFloat(timeIndex, timer / duration);
+
+            yield return new WaitForSeconds(Time.deltaTime);
+        }
+
+        transitionMat.SetFloat(timeIndex, 0);
+        yield return null;
+
+        SceneManager.LoadScene(sceneIndex);
+    }
     public static IEnumerator Flash(Renderer rend, Material flashMaterial, float duration)
     {
         Material[] mats = new Material[rend.materials.Length];

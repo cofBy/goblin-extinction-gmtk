@@ -1,7 +1,6 @@
-using Unity.Cinemachine;
-using UnityEditor.ShaderGraph.Drawing.Inspector.PropertyDrawers;
 using UnityEngine;
 using UnityEngine.Rendering.Universal;
+using UnityEngine.UI;
 
 public class mechLogic : MonoBehaviour
 {
@@ -31,9 +30,20 @@ public class mechLogic : MonoBehaviour
     public LayerMask humanMask;
     public DecalProjector humanDecal;
 
+    [Header("dying")]
+    public float timeToDie;
+    float deathTimer;
+
+    public Slider timeToDieUI;
+
+    public GameObject deathParticle;
+    public GameObject deathPanel;
+
     private void Start()
     {
         groundDistance = distanceFromGround;
+        deathTimer = timeToDie;
+        deathPanel.SetActive(false);
     }
     private void Update()
     {
@@ -54,7 +64,7 @@ public class mechLogic : MonoBehaviour
 
         transform.position += inputDir.y * transform.forward * movementSpeed * Time.deltaTime;
 
-        if (Input.GetButton("Fire"))
+        if (inAction == false && Input.GetButton("Fire"))
         {
             inAction = true;
         }
@@ -66,6 +76,9 @@ public class mechLogic : MonoBehaviour
             {
                 StartCoroutine(FEEL.CameraShake(1, timeToAttack, Vector3.one));
                 Collider[] humansAttacked = Physics.OverlapSphere(transform.position, attackRadius, humanMask);
+
+                deathTimer = humansAttacked.Length > 0 ? timeToDie : deathTimer;
+
                 foreach (Collider human in humansAttacked)
                 {
                     Quaternion decalRot = Quaternion.LookRotation((planet.position - human.transform.position).normalized, human.transform.forward);
@@ -83,5 +96,18 @@ public class mechLogic : MonoBehaviour
                 inAction = false;
             }
         }
+
+        if (deathTimer < 0)
+        {
+            Destroy(gameObject);
+            FEEL.Particals(deathParticle, transform.position, Quaternion.identity);
+            deathPanel.SetActive(true);
+        }
+        else
+        {
+            deathTimer -= Time.deltaTime;
+        }
+
+        timeToDieUI.value = deathTimer / timeToDie;
     }
 }
