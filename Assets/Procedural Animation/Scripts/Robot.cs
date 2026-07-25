@@ -140,7 +140,7 @@ public class Robot : MonoBehaviour
     }
     Vector3 SlerpStep(Vector3 start, Vector3 end, float t, float centerOffset, float amp)
     {
-        Vector3 Center = Vector3.Lerp(start, end, 0.5f) + (centerOffset * Vector3.up);
+        Vector3 Center = Vector3.Lerp(start, end, 0.5f) + (centerOffset * transform.up);
 
         Vector3 slerp = Vector3.SlerpUnclamped(start - Center, end - Center, t) + Center;
 
