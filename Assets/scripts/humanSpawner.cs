@@ -9,13 +9,14 @@ public class humanSpawner : MonoBehaviour
     [Header("spawning")]
     public humanLogic humanPrefab;
     public Transform planet;
+    public Transform parent;
 
     private void Start()
     {
         for (int i = 0; i < amount; i++)
         {
             Vector3 pos = polarCoords(Random.Range(-Mathf.PI, Mathf.PI), Random.Range(-Mathf.PI, Mathf.PI), radius);
-            humanLogic human = Instantiate(humanPrefab, pos, Quaternion.identity);
+            humanLogic human = PoolManager.SpawnObject(humanPrefab, pos, Quaternion.identity);
 
             human.planet = planet;
         }

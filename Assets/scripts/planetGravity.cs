@@ -16,6 +16,7 @@ public class planetGravity : MonoBehaviour
     {
         foreach (Rigidbody rb in rbs)
         {
+            if (rb.gameObject == null) continue;
             Vector3 dir = transform.position - rb.transform.position;
             float f = gravityStrength * rb.mass / dir.magnitude;
 
