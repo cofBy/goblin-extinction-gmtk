@@ -10,6 +10,7 @@ public class humanLogic : MonoBehaviour
 
     [Header("movement")]
     public float movementSpeed;
+    public float gravityStrength;
 
     [Header("checking grounded")]
     public float groundRayLength;
@@ -30,17 +31,26 @@ public class humanLogic : MonoBehaviour
 
         timer += Time.deltaTime * animationSpeed;
         model.localRotation = Quaternion.Euler(0, 0, Mathf.Sin(timer * 2) * swayAmount);
-        model.localPosition = Vector3.up * Mathf.Sin(timer) * maxBounce;
+        model.localPosition = transform.up * Mathf.Sin(timer) * maxBounce;
     }
 
     private void FixedUpdate()
     {
         alignToPlanet();
 
-        if (grounded == false) return;
-        Vector3 up = transform.up;
-        Vector3 verticalVel = Vector3.Project(rb.linearVelocity, up);
-        rb.linearVelocity = transform.forward * movementSpeed + verticalVel;
+        if (grounded == false)
+        {
+            Vector3 dir = planet.position - transform.position;
+            float f = gravityStrength * rb.mass / dir.magnitude;
+            rb.AddForce(dir.normalized * f);
+        }
+        else
+        {
+            Vector3 up = transform.up;
+            Vector3 verticalVel = Vector3.Project(rb.linearVelocity, up);
+            rb.linearVelocity = transform.forward * movementSpeed + verticalVel;
+        }
+
     }
 
     void alignToPlanet()

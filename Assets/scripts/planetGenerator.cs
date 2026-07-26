@@ -19,9 +19,9 @@ public class planetGenerator : MonoBehaviour
     private void Start()
     {
         seed = Random.Range(0, 99);
-        makeCube();
+        generate();
     }
-    void makeCube()
+    public void generate()
     {
         MeshFilter filter = GetComponent<MeshFilter>();
 

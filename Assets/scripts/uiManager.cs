@@ -10,6 +10,6 @@ public class uiManager : MonoBehaviour
     private void Start()
     {
         if (maneMenu != null) maneMenu.onClick.AddListener(() => FEEL.gotoScene(0, this)); 
-        start.onClick.AddListener(() => FEEL.gotoScene(1, this));
+        if (start != null) start.onClick.AddListener(() => FEEL.gotoScene(1, this));
     }
 }

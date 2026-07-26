@@ -39,6 +39,9 @@ public class mechLogic : MonoBehaviour
     public GameObject deathParticle;
     public GameObject deathPanel;
 
+    [Header("winning")]
+    public GameObject winningScreen;
+
     private void Start()
     {
         groundDistance = distanceFromGround;
@@ -97,17 +100,24 @@ public class mechLogic : MonoBehaviour
             }
         }
 
-        if (deathTimer < 0)
+        if (winningScreen.activeSelf == false)
         {
-            Destroy(gameObject);
-            FEEL.Particals(deathParticle, transform.position, Quaternion.identity);
-            deathPanel.SetActive(true);
+            if (deathTimer < 0)
+            {
+                Destroy(gameObject);
+                FEEL.Particals(deathParticle, transform.position, Quaternion.identity);
+                deathPanel.SetActive(true);
+            }
+            else
+            {
+                deathTimer -= Time.deltaTime;
+            }
         }
         else
         {
-            deathTimer -= Time.deltaTime;
+            deathTimer = timeToDie;
         }
 
-        timeToDieUI.value = deathTimer / timeToDie;
+            timeToDieUI.value = deathTimer / timeToDie;
     }
 }
