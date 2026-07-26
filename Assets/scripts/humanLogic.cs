@@ -25,6 +25,12 @@ public class humanLogic : MonoBehaviour
 
     public Transform model;
 
+    [Header("curses")]
+    public cursesSystem curses;
+    public Transform mech;
+    public float minDistance;
+    float controledSpeed;
+
     private void Update()
     {
         grounded = Physics.Raycast(transform.position, -transform.up, groundRayLength, groundMask);
@@ -32,6 +38,10 @@ public class humanLogic : MonoBehaviour
         timer += Time.deltaTime * animationSpeed;
         model.localRotation = Quaternion.Euler(0, 0, Mathf.Sin(timer * 2) * swayAmount);
         model.localPosition = transform.up * Mathf.Sin(timer) * maxBounce;
+
+        controledSpeed = movementSpeed;
+
+        if (curses != null) handleCurses(); 
     }
 
     private void FixedUpdate()
@@ -46,11 +56,17 @@ public class humanLogic : MonoBehaviour
         }
         else
         {
-            Vector3 up = transform.up;
-            Vector3 verticalVel = Vector3.Project(rb.linearVelocity, up);
-            rb.linearVelocity = transform.forward * movementSpeed + verticalVel;
+            Vector3 verticalVel = Vector3.Project(rb.linearVelocity, transform.up);
+            rb.linearVelocity = transform.forward * controledSpeed + verticalVel;
         }
+    }
 
+    void handleCurses()
+    {
+        if (curses.hasCurse("1.5x speed"))
+        {
+            controledSpeed = movementSpeed * 1.3f;
+        }
     }
 
     void alignToPlanet()

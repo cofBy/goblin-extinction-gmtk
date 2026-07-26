@@ -60,6 +60,9 @@ MonoBehaviour:
   maxBounce: 0.5
   animationSpeed: 15
   model: {fileID: 7500248715468865390}
+  curses: {fileID: 0}
+  mech: {fileID: 0}
+  minDistance: 20
 --- !u!54 &8124805651084690410
 Rigidbody:
   m_ObjectHideFlags: 0

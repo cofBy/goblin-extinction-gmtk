@@ -11,6 +11,7 @@ public class humanSpawner : MonoBehaviour
     public humanLogic humanPrefab;
     public Transform planet;
     public Transform parent;
+    public Transform mech;
 
     [Header("counting humans")]
     public TextMeshProUGUI humansCount;
@@ -38,6 +39,8 @@ public class humanSpawner : MonoBehaviour
             humanInstances.Add(human);
 
             human.planet = planet;
+            if (mech != null) human.mech = mech;
+            if (curses != null) human.curses = curses;
         }
     }
     private void Update()

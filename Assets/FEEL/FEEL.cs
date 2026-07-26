@@ -80,6 +80,22 @@ public class FEEL : MonoBehaviour
         transitionMat.SetFloat(timeIndex, -1);
     }
 
+    public static IEnumerator transitionWithoutScene()
+    {
+        transitionMat.SetFloat(timeIndex, 1);
+
+        float timer = duration;
+        while (timer >= -duration)
+        {
+            timer -= Time.deltaTime;
+            transitionMat.SetFloat(timeIndex, timer / duration);
+
+            yield return new WaitForSeconds(Time.deltaTime);
+        }
+
+        transitionMat.SetFloat(timeIndex, -1);
+    }
+
     static IEnumerator sceneEnumerator(int sceneIndex)
     {
         float timer = duration;

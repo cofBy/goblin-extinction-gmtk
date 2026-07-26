@@ -42,11 +42,28 @@ public class mechLogic : MonoBehaviour
     [Header("winning")]
     public GameObject winningScreen;
 
+    [Header("curses")]
+    public cursesSystem curses;
+    public MeshFilter goblin;
+    public Mesh goblinHat;
+
+    float controledSpeed;
+    float controledDeathTime;
+    float controledAttackRadius;
+    float controledTurningSpeed;
+
+    public float scaledUpJob;
+
     private void Start()
     {
         groundDistance = distanceFromGround;
         deathTimer = timeToDie;
         deathPanel.SetActive(false);
+
+        controledSpeed = movementSpeed;
+        controledDeathTime = timeToDie;
+
+        controledAttackRadius = attackRadius;
     }
     private void Update()
     {
@@ -65,7 +82,7 @@ public class mechLogic : MonoBehaviour
         transform.rotation = Quaternion.FromToRotation(transform.up, dir) * transform.rotation;
         transform.rotation = Quaternion.AngleAxis(inputDir.x * turnSpeed * Time.deltaTime, dir) * transform.rotation;
 
-        transform.position += inputDir.y * transform.forward * movementSpeed * Time.deltaTime;
+        transform.position += inputDir.y * transform.forward * controledSpeed * Time.deltaTime;
 
         if (inAction == false && Input.GetButton("Fire"))
         {
@@ -78,9 +95,9 @@ public class mechLogic : MonoBehaviour
             if (timer < timeToAttack)
             {
                 StartCoroutine(FEEL.CameraShake(1, timeToAttack, Vector3.one));
-                Collider[] humansAttacked = Physics.OverlapSphere(transform.position, attackRadius, humanMask);
+                Collider[] humansAttacked = Physics.OverlapSphere(transform.position, controledAttackRadius, humanMask);
 
-                deathTimer = humansAttacked.Length > 0 ? timeToDie : deathTimer;
+                deathTimer = humansAttacked.Length > 0 ? controledDeathTime : deathTimer;
 
                 foreach (Collider human in humansAttacked)
                 {
@@ -115,9 +132,37 @@ public class mechLogic : MonoBehaviour
         }
         else
         {
-            deathTimer = timeToDie;
+            deathTimer = controledDeathTime;
         }
 
-            timeToDieUI.value = deathTimer / timeToDie;
+        timeToDieUI.value = deathTimer / controledDeathTime;
+
+        handleCurse();
+    }
+
+    void handleCurse()
+    {
+        if (curses.hasCurse("cool hat"))
+        {
+            if (goblin.mesh != goblinHat) goblin.mesh = goblinHat;
+        }
+        if (curses.hasCurse("1.5x speed"))
+        {
+            controledSpeed = movementSpeed * 1.5f;
+        }
+        if (curses.hasCurse("adrenaline"))
+        {
+            controledSpeed = movementSpeed * 2f;
+            controledDeathTime = 3f;
+        }
+        if (curses.hasCurse("job"))
+        {
+            controledAttackRadius = attackRadius * scaledUpJob;
+            transform.localScale = scaledUpJob * Vector3.one;
+        }
+        if (curses.hasCurse("no shower"))
+        {
+            controledTurningSpeed = turnSpeed * 1.5f;
+        }
     }
 }

@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
@@ -47,12 +48,23 @@ public class cursesSystem : MonoBehaviour
         for (int i = 0; i < curseObjects.Length; i++)
         {
             int index = i;
+
+            curseObjects[i].onClick.RemoveAllListeners();
             curseObjects[i].onClick.AddListener(() => addCurse(index));
 
-            curseObjects[i].gameObject.SetActive(index > curses.Count);
+            curseObjects[i].gameObject.SetActive(index < curses.Count);
         }
 
-        playButton.onClick.AddListener(showCurses);
+        if (curses.Count == 0)
+        {
+            playButton.onClick.RemoveAllListeners();
+            playButton.onClick.AddListener(play);
+        }
+        else
+        {
+            playButton.onClick.RemoveAllListeners();
+            playButton.onClick.AddListener(showCurses);
+        }
     }
 
     void showCurses()
@@ -88,8 +100,19 @@ public class cursesSystem : MonoBehaviour
         Transform curseInstance = Instantiate(appliedCursePrefab, appliedCurseParent);
         curseInstance.GetChild(0).GetComponent<TextMeshProUGUI>().text = inUseCurses[inUseCurses.Count - 1].name;
 
+        play();
+    }
+
+    void play()
+    {
+        StartCoroutine(FEEL.transitionWithoutScene());
         amount += increase;
         spawner.spawn(amount);
         planet.generate();
+    }
+
+    public bool hasCurse(string name)
+    {
+        return inUseCurses.Any(c => c.name == name);
     }
 }
