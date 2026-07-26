@@ -54,6 +54,11 @@ public class mechLogic : MonoBehaviour
 
     public float scaledUpJob;
 
+    [Header("sfx")]
+    public float minTimeToNoise;
+    public float maxTimeToNoise;
+    float noiseTimer;
+
     private void Start()
     {
         groundDistance = distanceFromGround;
@@ -64,6 +69,8 @@ public class mechLogic : MonoBehaviour
         controledDeathTime = timeToDie;
 
         controledAttackRadius = attackRadius;
+
+        noiseTimer = Random.Range(minTimeToNoise, maxTimeToNoise);
     }
     private void Update()
     {
@@ -87,6 +94,7 @@ public class mechLogic : MonoBehaviour
         if (inAction == false && Input.GetButton("Fire"))
         {
             inAction = true;
+            FEEL.PlaySound("attack");
         }
 
         if (inAction == true)
@@ -97,7 +105,11 @@ public class mechLogic : MonoBehaviour
                 StartCoroutine(FEEL.CameraShake(1, timeToAttack, Vector3.one));
                 Collider[] humansAttacked = Physics.OverlapSphere(transform.position, controledAttackRadius, humanMask);
 
-                deathTimer = humansAttacked.Length > 0 ? controledDeathTime : deathTimer;
+                if (humansAttacked.Length > 0)
+                {
+                    deathTimer = controledDeathTime;
+                    FEEL.PlaySound("humanDeath");
+                }
 
                 foreach (Collider human in humansAttacked)
                 {
@@ -138,6 +150,13 @@ public class mechLogic : MonoBehaviour
         timeToDieUI.value = deathTimer / controledDeathTime;
 
         handleCurse();
+
+        noiseTimer -= Time.deltaTime;
+        if (noiseTimer < 0)
+        {
+            noiseTimer = Random.Range(minTimeToNoise, maxTimeToNoise);
+            FEEL.PlaySound("goblinNoise" + Random.Range(0, 9));
+        }
     }
 
     void handleCurse()

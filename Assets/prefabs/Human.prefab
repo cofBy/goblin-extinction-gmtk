@@ -52,7 +52,7 @@ MonoBehaviour:
   alignSpeed: 30
   movementSpeed: 10
   gravityStrength: 250
-  groundRayLength: 3
+  groundRayLength: 2.6
   groundMask:
     serializedVersion: 2
     m_Bits: 64

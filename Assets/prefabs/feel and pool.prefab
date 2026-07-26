@@ -58,7 +58,105 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 24f0175b4aa994744965a23329a15112, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::FEEL
-  PublicSounds: []
+  PublicSounds:
+  - clip: {fileID: 8300000, guid: a627a770c55dc294d97bd83cf44cb940, type: 3}
+    MinVolume: 0.8
+    MaxVolume: 1
+    MinPitch: 0.8
+    MaxPitch: 1
+    Loop: 0
+    Source: {fileID: 0}
+  - clip: {fileID: 8300000, guid: 214dbbc9236fa734ba12785cb9c04444, type: 3}
+    MinVolume: 0.8
+    MaxVolume: 1
+    MinPitch: 0.9
+    MaxPitch: 1
+    Loop: 0
+    Source: {fileID: 0}
+  - clip: {fileID: 8300000, guid: 7dc8605b764b518468f778a1a1dd0325, type: 3}
+    MinVolume: 1
+    MaxVolume: 1
+    MinPitch: 1
+    MaxPitch: 1
+    Loop: 0
+    Source: {fileID: 0}
+  - clip: {fileID: 8300000, guid: 5b7139a8042cc1e41866d7b8ef539835, type: 3}
+    MinVolume: 0.5
+    MaxVolume: 0.8
+    MinPitch: 0.9
+    MaxPitch: 1
+    Loop: 0
+    Source: {fileID: 0}
+  - clip: {fileID: 8300000, guid: d040c2787cbdf9f4383a326cb250d370, type: 3}
+    MinVolume: 0.7
+    MaxVolume: 1
+    MinPitch: 0.9
+    MaxPitch: 1
+    Loop: 0
+    Source: {fileID: 0}
+  - clip: {fileID: 8300000, guid: 3ee8f139e03b0284e869701513248fd0, type: 3}
+    MinVolume: 0.7
+    MaxVolume: 1
+    MinPitch: 0.9
+    MaxPitch: 1
+    Loop: 0
+    Source: {fileID: 0}
+  - clip: {fileID: 8300000, guid: 0fbd915d1e684764e98baaaf0f4ad209, type: 3}
+    MinVolume: 0.7
+    MaxVolume: 1
+    MinPitch: 0.9
+    MaxPitch: 1
+    Loop: 0
+    Source: {fileID: 0}
+  - clip: {fileID: 8300000, guid: 20e8e7fe0837e4e4096defed0509fd75, type: 3}
+    MinVolume: 0.7
+    MaxVolume: 1
+    MinPitch: 0.9
+    MaxPitch: 1
+    Loop: 0
+    Source: {fileID: 0}
+  - clip: {fileID: 8300000, guid: 296cf4c382f05a44e87e7c685ef08ff4, type: 3}
+    MinVolume: 0.7
+    MaxVolume: 1
+    MinPitch: 0.9
+    MaxPitch: 1
+    Loop: 0
+    Source: {fileID: 0}
+  - clip: {fileID: 8300000, guid: 6aeecaba90c51b14b95693130507fd37, type: 3}
+    MinVolume: 0.7
+    MaxVolume: 1
+    MinPitch: 0.9
+    MaxPitch: 1
+    Loop: 0
+    Source: {fileID: 0}
+  - clip: {fileID: 8300000, guid: 64aae74528753fe49a8c0186802e6f55, type: 3}
+    MinVolume: 0.7
+    MaxVolume: 1
+    MinPitch: 0.9
+    MaxPitch: 1
+    Loop: 0
+    Source: {fileID: 0}
+  - clip: {fileID: 8300000, guid: d380df9f54bbae448be42e71be51f617, type: 3}
+    MinVolume: 0.7
+    MaxVolume: 1
+    MinPitch: 0.9
+    MaxPitch: 1
+    Loop: 0
+    Source: {fileID: 0}
+  - clip: {fileID: 8300000, guid: 6c26647dcc788d343b412d889a6b61cd, type: 3}
+    MinVolume: 0.7
+    MaxVolume: 1
+    MinPitch: 0.75
+    MaxPitch: 1
+    Loop: 0
+    Source: {fileID: 0}
+  - clip: {fileID: 8300000, guid: a3ed9014eeada344a901e15a9579ce2f, type: 3}
+    MinVolume: 0.7
+    MaxVolume: 1
+    MinPitch: 0.8
+    MaxPitch: 1
+    Loop: 0
+    Source: {fileID: 0}
   cam: {fileID: 0}
   publicTransitionMat: {fileID: 2100000, guid: ed19e9155db2cd4479db1fc6a98eebc1, type: 2}
   durationSeconds: 1

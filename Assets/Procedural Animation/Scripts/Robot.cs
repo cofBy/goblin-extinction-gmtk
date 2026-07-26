@@ -163,6 +163,7 @@ public class Robot : MonoBehaviour
             } 
             yield return null;
         }
+        FEEL.PlaySound("footstep");
     }
 }
 
